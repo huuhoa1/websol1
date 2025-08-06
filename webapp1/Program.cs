@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using webapp1.Data;
 using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.SystemTextJson;
+using GraphQL.Client.Abstractions;
 using webapp1.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 var graphQLEndpoint = builder.Configuration["GraphQL:Endpoint"];
 builder.Services.AddSingleton<GraphQLHttpClient>(sp =>
     new GraphQLHttpClient(graphQLEndpoint!, new SystemTextJsonSerializer()));
+builder.Services.AddSingleton<IGraphQLClient>(sp => sp.GetRequiredService<GraphQLHttpClient>());
 
 // Add GraphQL services
 builder.Services.AddScoped<ICountryService, CountryService>();

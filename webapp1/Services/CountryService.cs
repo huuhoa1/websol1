@@ -1,4 +1,4 @@
-using GraphQL.Client.Http;
+using GraphQL.Client.Abstractions;
 using GraphQL;
 using webapp1.Models;
 using webapp1.GraphQL;
@@ -12,10 +12,10 @@ namespace webapp1.Services
 
     public class CountryService : ICountryService
     {
-        private readonly GraphQLHttpClient _graphQLClient;
+        private readonly IGraphQLClient _graphQLClient;
         private readonly ILogger<CountryService> _logger;
 
-        public CountryService(GraphQLHttpClient graphQLClient, ILogger<CountryService> logger)
+        public CountryService(IGraphQLClient graphQLClient, ILogger<CountryService> logger)
         {
             _graphQLClient = graphQLClient;
             _logger = logger;
