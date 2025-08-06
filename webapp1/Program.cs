@@ -18,6 +18,9 @@ builder.Services.AddSingleton<GraphQLHttpClient>(sp =>
 // Add GraphQL services
 builder.Services.AddScoped<ICountryService, CountryService>();
 
+// Add PDF export service
+builder.Services.AddScoped<IPdfExportService, PdfExportService>();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
