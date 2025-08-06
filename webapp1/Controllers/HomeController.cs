@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapp1.Data;
 using webapp1.Models;
+using webapp1.Services;
 
 namespace webapp1.Controllers
 {
@@ -10,11 +11,13 @@ namespace webapp1.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
+        private readonly ICountryService _countryService;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, ICountryService countryService)
         {
             _logger = logger;
             _context = context;
+            _countryService = countryService;
         }
 
         public IActionResult Index()
@@ -35,6 +38,20 @@ namespace webapp1.Controllers
                 .ToListAsync();
             
             return View(products);
+        }
+
+        public async Task<IActionResult> Countries()
+        {
+            try
+            {
+                var countries = await _countryService.GetCountriesAsync();
+                return View(countries);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading countries page");
+                return View(new List<Country>());
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
